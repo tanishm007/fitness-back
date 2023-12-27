@@ -22,6 +22,15 @@ const userSchema = new mongoose.Schema({
 
 const User = new mongoose.model("User", userSchema)
 
+const contactUsSchema = new mongoose.Schema({
+    name: String,
+    address: String,
+    phoneNumber: String,
+    gender: String,
+  });
+  
+  const ContactUs = new mongoose.model("ContactUs", contactUsSchema);
+
 //Routes
 app.post("/login", (req, res)=> {
     const { email, password} = req.body
@@ -60,7 +69,24 @@ app.post("/register", (req, res)=> {
     })
     
 }) 
-
+app.post("/contactUs", (req, res) => {
+    const { name, address, phoneNumber, gender } = req.body;
+  
+    const contactUsData = new ContactUs({
+      name,
+      address,
+      phoneNumber,
+      gender,
+    });
+  
+    contactUsData.save((err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send({ message: "Contact form submitted successfully." });
+      }
+    });
+  });
 app.listen(9002,() => {
     console.log("BE started at port 9002")
 })
